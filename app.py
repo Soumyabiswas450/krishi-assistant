@@ -57,20 +57,25 @@ if user_message:
 
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            response = client.models.generate_content(
-                model="gemini-3.6-flash",
-                contents=contents,
-                config=types.GenerateContentConfig(
-                    system_instruction=(
-                        "You are a helpful agriculture assistant. "
-                        "Answer farmers in simple, easy-to-understand language. "
-                        "If the user asks a question unrelated to agriculture, "
-                        "you can still answer briefly."
+            try:
+                response = client.models.generate_content(
+                    model="gemini-3.6-flash",
+                    contents=contents,
+                    config=types.GenerateContentConfig(
+                        system_instruction=(
+                            "You are a helpful agriculture assistant. "
+                            "Answer farmers in simple, easy-to-understand language. "
+                            "If the user asks a question unrelated to agriculture, "
+                            "you can still answer briefly."
+                        )
                     )
                 )
-            )
-            answer = response.text
-            st.markdown(answer)
-
+                answer = response.text
+                st.markdown(answer)
+            except Exception:
+                answer = (
+                    "🌾 I am having trouble connecting right now. "
+                    "Please try asking your question again in a moment."
+                )
 
     st.session_state.messages.append({"role": "assistant", "content": answer})
