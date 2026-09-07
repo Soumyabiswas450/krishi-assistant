@@ -15,11 +15,6 @@ if not api_key:
 
 client = genai.Client(api_key=api_key)
 
-app = FastAPI() 
-
-@app.get("/")
-def home():
-    return {"status": "ok"}
 load_dotenv()
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
