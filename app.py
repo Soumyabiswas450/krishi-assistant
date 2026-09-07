@@ -1,11 +1,21 @@
 import os
+import streamlit as st
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
-import streamlit as st
-from fastapi import FastAPI
 
-app = FastAPI()  # <--- Vercel looks for this exact name "app"
+load_dotenv()
+
+# Read from Streamlit Cloud Secrets, fallback to .env for local development
+api_key = st.secrets.get("GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY")
+
+if not api_key:
+    st.error("GEMINI_API_KEY is not configured. Add it in Streamlit Cloud Secrets.")
+    st.stop()
+
+client = genai.Client(api_key=api_key)
+
+app = FastAPI() 
 
 @app.get("/")
 def home():
