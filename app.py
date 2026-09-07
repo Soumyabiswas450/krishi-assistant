@@ -3,8 +3,13 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 import streamlit as st
+from fastapi import FastAPI
 
-#load the .env
+app = FastAPI()  # <--- Vercel looks for this exact name "app"
+
+@app.get("/")
+def home():
+    return {"status": "ok"}
 load_dotenv()
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
